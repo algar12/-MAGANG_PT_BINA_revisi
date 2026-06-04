@@ -16,7 +16,7 @@ sequenceDiagram
     participant R as Laravel Reverb (WebSocket)
     participant F as Next.js Frontend
 
-    O->>F: Buka "Mulai Menimbang" & Pilih Bahan
+    O->>F: Buka Mulai Menimbang & Pilih Bahan
     F->>F: Menunggu koneksi WebSocket...
     F->>R: Subscribe ke Channel (scale.TIMBANGAN-01)
     
@@ -55,16 +55,16 @@ flowchart TD
     
     B -->|Bahan Baku| C[Manajemen Bahan (CRUD)]
     B -->|Perangkat| D[Manajemen ESP32 (CRUD)]
-    B -->|Produksi| E[Buka "Mulai Menimbang"]
+    B -->|Produksi| E[Buka Mulai Menimbang]
     
-    E --> F[Klik "+ Buat Sesi Baru"]
+    E --> F[Klik + Buat Sesi Baru]
     F --> G[Pilih Bahan Baku dari Dropdown]
     G --> H[Monitor Live Weight]
     
     H --> I{Apakah Timbangan Sesuai Target?}
     I -- Tidak --> H
     
-    I -- Ya --> J[Klik "Timbang & Simpan"]
+    I -- Ya --> J[Klik Timbang dan Simpan]
     J --> K[Sistem Mem-generate Batch Code (Costing)]
     K --> L[Data Tersimpan di Database]
     L --> M[Sesi Selesai / Lanjut Penimbangan Baru]
