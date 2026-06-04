@@ -4,7 +4,7 @@ Dokumen ini berisi panduan lengkap tentang bagaimana menyambungkan timbangan kom
 
 ---
 
-![Ilustrasi Wiring Hybrid](./images/hybrid_wiring_diagram.png)
+![Ilustrasi Wiring Hybrid](./images/hybrid_wiring_clear.png)
 
 ## 1. Diagram Skema Kabel (Wiring Diagram)
 
