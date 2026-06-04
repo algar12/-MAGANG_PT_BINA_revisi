@@ -11,36 +11,36 @@ Diagram ini mengilustrasikan bagaimana data berat mengalir dari perangkat keras 
 ```mermaid
 sequenceDiagram
     participant O as Operator
-    participant E as ESP32 (IoT)
+    participant E as ESP32
     participant A as Laravel API
-    participant R as Laravel Reverb (WebSocket)
+    participant R as Laravel Reverb
     participant F as Next.js Frontend
 
-    O->>F: Buka Mulai Menimbang & Pilih Bahan
-    F->>F: Menunggu koneksi WebSocket...
-    F->>R: Subscribe ke Channel (scale.TIMBANGAN-01)
+    O->>F: Buka Mulai Menimbang dan Pilih Bahan
+    F->>F: Menunggu koneksi WebSocket
+    F->>R: Subscribe ke Channel
     
     activate E
-    E->>A: HTTP POST /api/sensor/weight (device_id, weight)
+    E->>A: HTTP POST api sensor weight
     activate A
     A->>A: Validasi Data
-    A->>R: Broadcast Event (WeightReceived)
+    A->>R: Broadcast Event WeightReceived
     deactivate A
-    R-->>F: Push Data via WebSocket (.weight.received)
-    F->>O: Update UI (Animasi Angka Timbangan)
+    R-->>F: Push Data via WebSocket weight received
+    F->>O: Update UI Animasi Angka Timbangan
     
     loop Real-Time Stream
-        E->>A: HTTP POST /api/sensor/weight
+        E->>A: HTTP POST api sensor weight
         A->>R: Broadcast Event
         R-->>F: Push Data
         F->>O: Update Angka Live
     end
     deactivate E
 
-    O->>F: Klik "Timbang & Simpan"
-    F->>A: HTTP POST /api/production (Simpan Costing)
+    O->>F: Klik Timbang dan Simpan
+    F->>A: HTTP POST api production Simpan Costing
     A-->>F: Respons Sukses
-    F->>O: Tampilkan Notifikasi & Simpan ke Histori
+    F->>O: Tampilkan Notifikasi dan Simpan ke Histori
 ```
 
 ---
@@ -53,21 +53,21 @@ Diagram alur (*flowchart*) berikut memodelkan tahapan yang dilakukan oleh operat
 flowchart TD
     A[Mulai] --> B{Pilih Menu Dashboard}
     
-    B -->|Bahan Baku| C[Manajemen Bahan (CRUD)]
-    B -->|Perangkat| D[Manajemen ESP32 (CRUD)]
+    B -->|Bahan Baku| C[Manajemen Bahan CRUD]
+    B -->|Perangkat| D[Manajemen ESP32 CRUD]
     B -->|Produksi| E[Buka Mulai Menimbang]
     
-    E --> F[Klik + Buat Sesi Baru]
+    E --> F[Klik Tambah Sesi Baru]
     F --> G[Pilih Bahan Baku dari Dropdown]
     G --> H[Monitor Live Weight]
     
-    H --> I{Apakah Timbangan Sesuai Target?}
+    H --> I{Apakah Timbangan Sesuai Target}
     I -- Tidak --> H
     
     I -- Ya --> J[Klik Timbang dan Simpan]
-    J --> K[Sistem Mem-generate Batch Code (Costing)]
+    J --> K[Sistem Generate Batch Code]
     K --> L[Data Tersimpan di Database]
-    L --> M[Sesi Selesai / Lanjut Penimbangan Baru]
+    L --> M[Sesi Selesai atau Lanjut Penimbangan Baru]
     
     M --> N[Selesai]
 ```
@@ -82,32 +82,32 @@ Diagram di bawah ini menunjukkan struktur relasional basis data yang menghubungk
 erDiagram
     DEVICES {
         bigint id PK
-        string device_id "Unique Identifier (contoh: TIMBANGAN-01)"
-        string name "Nama/Lokasi Alat"
+        string device_id
+        string name
         boolean is_active
     }
     
     MATERIALS {
         bigint id PK
-        string kode_produk "Unique"
+        string kode_produk
         string nama_produk
-        string uom_dasar "Gram, KG, dsb"
+        string uom_dasar
         decimal unit_cost
     }
 
     PRODUCTION_COSTINGS {
         bigint id PK
-        string batch_number "Auto-generated UUID/Angka"
+        string batch_number
         bigint material_id FK
         bigint device_id FK
-        decimal target_weight "Tujuan Berat"
-        decimal actual_weight "Berat Terukur"
-        string status "DRAFT / COMPLETED"
+        decimal target_weight
+        decimal actual_weight
+        string status
         timestamp created_at
     }
 
-    MATERIALS ||--o{ PRODUCTION_COSTINGS : "memiliki riwayat"
-    DEVICES ||--o{ PRODUCTION_COSTINGS : "menghasilkan"
+    MATERIALS ||--o{ PRODUCTION_COSTINGS : memiliki
+    DEVICES ||--o{ PRODUCTION_COSTINGS : menghasilkan
 ```
 
 ---
@@ -118,22 +118,19 @@ Gambaran *Use Case* sistem yang mendeskripsikan peran aktor (Operator & IoT) ter
 
 ```mermaid
 flowchart LR
-    %% Actors
-    O([Operator / Admin])
+    O([Operator])
     E([ESP32 Sensor IoT])
 
-    %% System Boundary
     subgraph Sistem Smart Timbangan
-        UC1(Kirim Data Berat Real-Time)
-        UC2(Monitor Berat Langsung - Live Display)
+        UC1(Kirim Data Berat RealTime)
+        UC2(Monitor Berat Langsung)
         UC3(Buat Sesi Penimbangan)
-        UC4(Simpan Data Penimbangan - Auto-Batch)
+        UC4(Simpan Data Penimbangan)
         UC5(Kelola Master Bahan Baku)
         UC6(Kelola Master Perangkat Device)
-        UC7(Lihat Histori/Report Penimbangan)
+        UC7(Lihat Histori Penimbangan)
     end
 
-    %% Relationships
     E --> UC1
     UC1 -.->|Memicu Update UI| UC2
 
