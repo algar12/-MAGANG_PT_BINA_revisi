@@ -4,6 +4,8 @@ Dokumen ini berisi panduan lengkap tentang bagaimana menyambungkan timbangan kom
 
 ---
 
+![Ilustrasi Wiring Hybrid](C:\Users\Admin\.gemini\antigravity\brain\7031164c-f66c-4153-a16c-0b699a28dbe4\hybrid_wiring_diagram_1780532578735.png)
+
 ## 1. Diagram Skema Kabel (Wiring Diagram)
 
 Berikut adalah ilustrasi penyambungan kabel (*tapping* / pencabangan) menggunakan format diagram. Garis tebal adalah kabel asli pabrik, sedangkan garis putus-putus adalah kabel tambahan yang Anda sambungkan ke modul HX711.
