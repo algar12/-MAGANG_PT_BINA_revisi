@@ -4,7 +4,7 @@ Dokumen ini berisi panduan lengkap tentang bagaimana menyambungkan timbangan kom
 
 ---
 
-![Ilustrasi Wiring Hybrid](C:\Users\Admin\.gemini\antigravity\brain\7031164c-f66c-4153-a16c-0b699a28dbe4\hybrid_wiring_diagram_1780532578735.png)
+![Ilustrasi Wiring Hybrid](./images/hybrid_wiring_diagram.png)
 
 ## 1. Diagram Skema Kabel (Wiring Diagram)
 
