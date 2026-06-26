@@ -44,6 +44,14 @@ export function Sidebar() {
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
 
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user_data");
+    }
+    router.push("/login");
+  };
+
   let lastGroup: string | null = null;
 
   return (
@@ -51,7 +59,7 @@ export function Sidebar() {
       className={cn(
         "fixed z-40 bg-sidebar border-border/50 transition-all duration-300",
         // Mobile layout (bottom nav)
-        "bottom-0 left-0 right-0 h-16 flex-row border-t px-2",
+        "flex bottom-0 left-0 right-0 h-16 flex-row border-t px-2",
         // Desktop layout (left sidebar)
         "md:top-0 md:bottom-auto md:h-screen md:flex-col md:border-r md:border-t-0 md:px-0",
         collapsed ? "md:w-[72px]" : "md:w-[240px]"
@@ -109,13 +117,28 @@ export function Sidebar() {
             </div>
           );
         })}
+
+        {/* Mobile Logout Button */}
+        <div className="flex-1 md:hidden">
+          <button
+            onClick={handleLogout}
+            id="mobile-logout-button"
+            className={cn(
+              "flex flex-col items-center justify-center gap-1 px-1 py-2 rounded-lg text-xs font-medium transition-all duration-200 h-full w-full",
+              "text-sidebar-foreground/60 hover:text-destructive hover:bg-destructive/10 cursor-pointer"
+            )}
+          >
+            <LogOut className="w-5 h-5 shrink-0" />
+            <span className="text-[10px] truncate block mt-0.5">Keluar</span>
+          </button>
+        </div>
       </nav>
 
       {/* Bottom (Desktop Only) */}
       <div className="hidden md:block px-3 pb-4 space-y-2">
         <Separator className="opacity-50 mb-2" />
         <button
-          onClick={() => router.push("/login")}
+          onClick={handleLogout}
           id="logout-button"
           className={cn(
             "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium w-full transition-all duration-200",

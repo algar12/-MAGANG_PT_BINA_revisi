@@ -1,25 +1,30 @@
+#include <Arduino.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <ArduinoJson.h>
 #include "HX711.h"
+#include "soc/soc.h"           // Untuk menonaktifkan brownout
+#include "soc/rtc_cntl_reg.h"  // Untuk menonaktifkan brownout
 
 // ==========================================
 // KONFIGURASI WIFI
 // ==========================================
-const char* ssid = "NAMA_WIFI_ANDA";
-const char* password = "PASSWORD_WIFI_ANDA";
+const char* ssid = "OPPO A17K";
+const char* password = "";
 
 // ==========================================
 // KONFIGURASI API BACKEND
 // ==========================================
 // Sesuaikan dengan IP address komputer/server backend Laravel (jangan gunakan localhost/127.0.0.1)
-const char* serverName = "http://192.168.1.100:8000/api/sensor/weight";
+const char* serverName = "http://192.168.1.11:8000/api/sensor/weight";
 const char* deviceId = "TIMBANGAN-01";
+
 
 // ==========================================
 // KONFIGURASI PIN & SENSOR HX711
 // ==========================================
-const int LOADCELL_DOUT_PIN = 16;
-const int LOADCELL_SCK_PIN = 4;
+const int LOADCELL_DOUT_PIN = 4;
+const int LOADCELL_SCK_PIN = 5;
 HX711 scale;
 
 // Faktor Kalibrasi (Dapatkan nilai ini dari proses kalibrasi terlebih dahulu)
@@ -35,6 +40,8 @@ const unsigned long SEND_INTERVAL = 1000;
 unsigned long lastSendTime = 0;
 
 void setup() {
+  WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); // Matikan detektor tegangan turun (Brownout)
+  
   Serial.begin(115200);
   Serial.println("Memulai sistem Smart Timbangan IoT...");
 
